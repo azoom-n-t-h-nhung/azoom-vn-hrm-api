@@ -10,45 +10,33 @@ export default async (req, res) => {
   page = parseInt(page)
   limit = parseInt(limit)
   const total = (page - 1) * limit
-  
+
   const role = await getRole(userId)
-  if (role == 'admin') {
-    let connection = paymentCollection().orderBy('created')
-    const getAllPayments = await connection.get()
-    const count = getAllPayments.docs.length
-    if (page === 1) {
-      const payments =  await connection.limit(limit).get()
-      if(payments.empty) return res.send({'count': count, 'data': []})
-      return res.send({
-        'count': count, 
-        'data': payments.docs.map(doc => doc.data())
-      })
-    }
-    const lastPayment = getAllPayments.docs[total - 1]
-    const payments = await connection.startAfter(lastPayment.data().created).limit(limit).get()
-    return res.send({
-      'count': count, 
-      'data': payments.docs.map(doc => doc.data())
-    })
-  } else if (role == 'user') {
-    let connection = paymentCollection().where('userId', '==', userId).orderBy('created')
-    const getAllPayments = await connection.get()
-    const count = getAllPayments.docs.length
-    if (page === 1) {
-      const payments = await connection.limit(limit).get()
-      if(payments.empty) return res.send({'count': count, 'data': []})
-      return res.send({
-        'count': count, 
-        'data': payments.docs.map(doc => doc.data())
-      })
-    }
-    const lastPayment = getAllPayments.docs[total - 1]
-    const payments = await connection.startAfter(lastPayment.data().created).limit(limit).get()
-    return res.send({
-      'count': count, 
-      'data': payments.docs.map(doc => doc.data())
-    })
-  } else {
-    return res.sendStatus(403)
+  if(role !== 'user' && role !== 'admin') return res.sendStatus(403) 
+
+  let connectionGetAll = paymentCollection().orderBy('created')
+  let connection = paymentCollection().orderBy('created').limit(limit)
+
+  if (role == 'user') {
+    connectionGetAll = connectionGetAll.where('userId', '==', userId)
+    connection = connection.where('userId', '==', userId)
   }
+  const getAllPayments = await connectionGetAll.get()
+  const count = getAllPayments.docs.length
+  
+  if (page === 1) {
+    const payments =  await connection.get()
+    if(payments.empty) return res.send({ count, 'data': []})
+    return res.send({
+      count, 
+      'data': payments.docs.map(doc => doc.data())
+    })
+  }
+
+  const lastPayment = getAllPayments.docs[total - 1]
+  const payments = await connection.startAfter(lastPayment.data().created).get()
+  return res.send({
+    count, 
+    'data': payments.docs.map(doc => doc.data())
+  })
 }
