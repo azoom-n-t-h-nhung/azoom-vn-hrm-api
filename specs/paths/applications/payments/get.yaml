@@ -1,0 +1,59 @@
+operationId: paymentsApplications.getList
+tags: 
+  - Applications
+summary: GET /applications/payments/
+parameters:
+  - name: page
+    in: query
+    description: Page number
+    schema:
+      type: integer
+      minimum: 1
+  - name: limit
+    in: query
+    description: Limit number
+    schema:
+      type: integer
+      minimum: 1
+responses:
+  200:
+    description: Success
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+            created:
+              type: string
+              format: date-time
+            status:
+              type: number
+            reasion:
+              type: string
+            amount:
+              type: string,
+            isActive:
+              type: boolean,
+            updated:
+              format: date-time
+            userId:
+              type: string
+          example:
+            {
+              "id": "payment-001",
+              "created": "2020/03/30 15:34:03",
+              "status": 1,
+              "reasion": "reasion...",
+              "amount": 123000,
+              "isActive": true,
+              "updated": "",
+              "userId": "azoom003"
+            }
+  400:
+    $ref: "#/components/responses/400"
+  401:
+    $ref: "#/components/responses/401"
+  500:
+    $ref: "#/components/responses/500"

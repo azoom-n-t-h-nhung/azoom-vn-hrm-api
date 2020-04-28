@@ -17,3 +17,7 @@ export const userCollection = () => {
 export const timesheetCollection = () => {
   return fireStore.collection(process.env.DB_TABLE_TIME_SHEET)
 }
+
+export const paymentCollection = () => {
+  return fireStore.collection(process.env.DB_TABLE_PAYMENT_APPLICATION)
+}
