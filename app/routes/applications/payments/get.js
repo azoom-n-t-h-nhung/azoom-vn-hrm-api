@@ -24,7 +24,7 @@ export default async (req, res) => {
 
   let payments
   if (page === 1) {
-    payments =  await connection.get()
+    payments = await connection.get()
     if(payments.empty) return res.send({ 'paymentApplications' : allPayments.size, 'data': []})
   } else {
     const lastIgnorePayment = allPayments.docs[totalIgnorePayment - 1]
