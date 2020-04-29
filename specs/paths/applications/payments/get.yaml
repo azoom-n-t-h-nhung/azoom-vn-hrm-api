@@ -1,7 +1,7 @@
 operationId: paymentsApplications.getList
 tags: 
   - Applications
-summary: GET /applications/payments/
+summary: GET list payments applications
 parameters:
   - name: page
     in: query
