@@ -1,29 +1,40 @@
-import {
-  projectMember as pmReq,
-  saveProjectMember,
-  isValidProjectMember
-} from '@cloudStoreDatabase/project-member'
+import firebase from 'firebase'
+import date from 'date-and-time'
+import _ from 'lodash/fp'
+import { projectCollection } from '@root/database.js'
 import { isAdmin } from '@helpers/check-rule'
-import { getProject } from '@cloudStoreDatabase/project'
+import { initMember } from '@helpers/project/initMember'
+import { execute } from '@root/util.js'
+import getProjectId from '@routes/projects/_projectId/get.js'
+import getMemberId from '@routes/projects/_projectId/members/_memberId/get.js'
+import getUserId from '@routes/users/_userId/get.js'
 
-const _ = require('lodash')
-
-module.exports = async (req, res) => {
+export default async (req, res) => {
   const { projectId } = req.params
-  const data = _.defaultsDeep(req.body, pmReq)
-  data.projectId = projectId
-  const project = await getProject(projectId)
-
-  if (!(await project)) {
-    return res.sendStatus(400)
-  }
-  if (isAdmin(req.user.positionPermissionId)) {
-    if (await isValidProjectMember(data)) {
-      data.createdUserId = req.user.id
-      return res.send(await saveProjectMember(data))
+  try {
+    if (!isAdmin(req.user.positionPermissionId)) return res.sendStatus(403)
+    const memberProfile = _.defaultsDeep(req.body, initMember)
+    const project = await execute(getProjectId, {
+      query: { projectId },
+    })
+    if (project.status === 404 || !project.body) return res.sendStatus(404)
+    const user = await execute(getUserId, {
+      params: { userId: memberProfile.memberId },
+    })
+    if (user.status === 404 || !user.body) return res.sendStatus(404)
+    const member = await execute(getMemberId, {
+      params: { projectId, memberId: memberProfile.memberId },
+    })
+    if (member.status !== 404) return res.sendStatus(400)
+    memberProfile.createdUserId = req.user.id
+    memberProfile.createdDate = date.format(new Date(), 'YYYY/MM/DD HH:mm:ss')
+    memberProfile.fullName = user.body.fullName
+    const addMember = {
+      members: firebase.firestore.FieldValue.arrayUnion(memberProfile),
     }
-    return res.sendStatus(400)
+    await projectCollection().doc(projectId).update(addMember)
+    return res.send(memberProfile)
+  } catch (error) {
+    res.sendStatus(500)
   }
-
-  return res.sendStatus(403)
 }
