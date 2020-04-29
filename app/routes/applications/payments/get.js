@@ -3,7 +3,7 @@ import getRole from '@helpers/users/getRole.js'
 
 export default async (req, res) => {
   const userId = req.user.id
-  let { page, limit } = req.query
+  let { page = 1, limit = 15 } = req.query
 
   // TODO: page, limit must be greater than 0  (handle be OpenAPI)
   // TODO: remove 2 line parser below when openAPI is applied
