@@ -26,7 +26,7 @@ responses:
             count:
               type: integer
               description: Total account
-            data:
+            paymentApplications:
               type: array
           example:
             {
