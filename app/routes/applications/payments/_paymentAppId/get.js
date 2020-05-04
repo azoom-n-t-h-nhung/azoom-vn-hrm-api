@@ -6,7 +6,7 @@ export default async (req, res) => {
   const { paymentAppId } = req.query
 
   const role = await getRole(userId)
-  if(role !== 'editor' && role !== 'admin') return res.sendStatus(403) 
+  if(!['admin', 'editor'].includes(role)) return res.sendStatus(403) 
 
   const paymentDetail = await paymentCollection().doc(paymentAppId).get()
   if(!paymentDetail.exists) return res.sendStatus(404)
