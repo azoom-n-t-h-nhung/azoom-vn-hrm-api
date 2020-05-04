@@ -49,17 +49,6 @@ responses:
               type: string
               description: id user login
               example: azoom003
-          example:
-            {
-              "id": "payment-001",
-              "created": "2020/03/30 15:34:03",
-              "status": 1,
-              "reason": "reason...",
-              "amount": 123000,
-              "isActive": true,
-              "updated": "",
-              "userId": "azoom003"
-            }
   400:
     $ref: "#/components/responses/400"
   401:
