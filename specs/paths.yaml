@@ -23,6 +23,8 @@
 /application/payments/:
   get:
     $ref: paths/applications/payments/get.yaml
+  post:
+    $ref: paths/applications/payments/post.yaml
 /application/payments/{paymentAppId}/:
   get:
     $ref: paths/applications/payments/_paymentAppId/get.yaml
