@@ -27,17 +27,12 @@ requestBody:
             type: boolean
             description: check active
             example: false
-          userId:
-            type: string
-            description: id user login
-            example: azoom003
         required:
           - id
           - status
           - reason
           - amount
           - isActive
-          - userId
 responses:
   200:
     description: Success

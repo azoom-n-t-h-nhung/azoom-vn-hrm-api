@@ -2,7 +2,7 @@ import { paymentCollection } from '@root/database'
 import getRole from '@helpers/users/getRole.js'
 
 export default async (req, res) => {
-  const userId = req.user.userId
+  const userId = req.user.id
   const payment = req.body
 
   const role = await getRole(userId)
@@ -17,7 +17,7 @@ export default async (req, res) => {
     reason : '',
     amount : '',
     isActive : false,
-    userId : '',
+    userId : userId,
     created : new Date(),
     updated: new Date()
   }
