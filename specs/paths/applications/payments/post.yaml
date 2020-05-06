@@ -7,10 +7,6 @@ requestBody:
     application/json:
       schema:
         properties:
-          id:
-            type: string
-            description: payment id
-            example: "payment-001"
           status:
             type: number
             description: pending or reject or approved
@@ -28,7 +24,6 @@ requestBody:
             description: check active
             example: false
         required:
-          - id
           - status
           - reason
           - amount

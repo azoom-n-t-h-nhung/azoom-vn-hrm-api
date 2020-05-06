@@ -1,5 +1,7 @@
 import { paymentCollection } from '@root/database'
 import getRole from '@helpers/users/getRole.js'
+import { format } from 'date-fns/fp'
+import { paymentIdPrefix } from '@constants/index.js'
 
 export default async (req, res) => {
   const userId = req.user.id
@@ -8,11 +10,10 @@ export default async (req, res) => {
   const role = await getRole(userId)
   if(!['admin', 'editor'].includes(role)) return res.sendStatus(403)
 
-  const checkPayment = await paymentCollection().doc(payment.id).get()
-  if (checkPayment.exists) return res.sendStatus(400)
+  const id = paymentIdPrefix + '-' + format('yyyyMMddHHmmss', new Date())
 
   const defaultPayment = {
-    id : '',
+    id : id,
     status : -1,
     reason : '',
     amount : '',
