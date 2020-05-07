@@ -13,13 +13,13 @@ export default async (req, res) => {
   const id = paymentIdPrefix + '-' + format('yyyyMMddHHmmss', new Date())
 
   const defaultPayment = {
-    id : id,
-    status : -1,
-    reason : '',
-    amount : '',
-    isActive : false,
-    userId : userId,
-    created : new Date(),
+    id: id,
+    status: -1,
+    reason: '',
+    amount: '',
+    isActive: false,
+    userId: userId,
+    created: new Date(),
     updated: new Date()
   }
   const newPayment = {...defaultPayment, ...payment}
