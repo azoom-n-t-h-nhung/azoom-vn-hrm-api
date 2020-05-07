@@ -13,14 +13,14 @@ export default async (req, res) => {
   const id = paymentIdPrefix + '-' + format('yyyyMMddHHmmss', new Date())
 
   const defaultPayment = {
-    id: id,
+    id,
+    userId,
     status: -1,
     reason: '',
     amount: '',
     isActive: false,
-    userId: userId,
     created: new Date(),
-    updated: new Date()
+    updated: ''
   }
   const newPayment = {...defaultPayment, ...payment}
   await paymentCollection().doc(newPayment.id).set(newPayment)
