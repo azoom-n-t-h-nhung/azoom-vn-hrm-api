@@ -11,9 +11,9 @@ parameters:
       type: string
   - name: isApproved
     in: query
-    description: False- reject application. True- approved application
-    example: true
-    default: False
+    description: 0- reject application. 1- approved application
+    example: 1
+    default: 0
     schema:
       type: string
 responses:

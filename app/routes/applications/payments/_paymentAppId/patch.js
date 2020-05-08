@@ -9,7 +9,7 @@ export default async (req, res) => {
   const { isApproved = false } = req.query
   const payment = await paymentCollection().doc(paymentAppId).get()
   if (!payment.exists) return res.sendStatus(404)
-  if (payment.data().status != status.inPending) return res.sendStatus(400)
+  if (payment.data().status !== status.pending) return res.sendStatus(400)
   
   const role = await getRole(userId)
   if (!role.includes('admin')) return res.sendStatus(403)
@@ -17,7 +17,7 @@ export default async (req, res) => {
   const newApprovalUsers = await initNewApprovalUser(userId, isApproved)
   const updatePaymentApp = {
     updated: new Date(),
-    status: (isApproved) ? 1 : 0,
+    status: Number(isApproved),
     approvalUsers: [ 
       newApprovalUsers
     ]
