@@ -1,7 +1,7 @@
-operationId: timesheets.checkin
+operationId: users.subtractPaidLeave
 tags:
-  - Timesheets
-summary: Checkin for time start working.
+  - Users
+summary: Subtract a paidleave of official user
 responses:
   200:
     description: Success
@@ -12,8 +12,8 @@ responses:
           properties:
             message:
               type: string
-              description: Notification about checkin.
-              example: Checkin successfully at 7:45. || You checked at 7:45.
+            example: 'Subtract paid leave successful'
+
   400:
     $ref: "#/components/responses/400"
   401:

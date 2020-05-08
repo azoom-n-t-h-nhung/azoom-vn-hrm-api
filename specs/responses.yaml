@@ -31,6 +31,17 @@
             type: string
             description: メッセージ
             example: 認証に失敗しました
+'403':
+  description: Forbidden
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            description: メッセージ
+            example: 全く許可しません
 '404':
   description: Not Found
   content:

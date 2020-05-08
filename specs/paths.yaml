@@ -12,6 +12,8 @@
 /applications/timesheets/{timesheetAppId}/:
   patch:
     $ref: paths/applications/timesheets/_timesheetAppId/patch.yaml
+  delete:
+    $ref: paths/applications/timesheets/_timesheetAppId/delete.yaml
 /applications/leaves/:
   post:
     $ref: paths/applications/leaves/post.yaml
@@ -23,6 +25,8 @@
 /applications/payments/:
   get:
     $ref: paths/applications/payments/get.yaml
+  post:
+    $ref: paths/applications/payments/post.yaml
 /applications/payments/{paymentAppId}/:
   get:
     $ref: paths/applications/payments/_paymentAppId/get.yaml
@@ -33,6 +37,12 @@
     $ref: paths/users/post.yaml
   get:
     $ref: paths/users/get.yaml
+/users/{userId}/permission/:
+  patch:
+    $ref: paths/users/_userId/permission/patch.yaml
+/users/{userId}/deactive/:
+  patch:
+    $ref: paths/users/_userId/deactive/patch.yaml
 /users/{userId}/:
   put:
     $ref: paths/users/_userId/put.yaml
@@ -46,6 +56,12 @@
 /users/paid-leave/one-more-day/:
   patch:
     $ref: paths/users/paid-leave/one-more-day/patch.yaml
+/users/paid-leave/reset-paid-leave/:
+  patch:
+    $ref: paths/users/paid-leave/reset-paid-leave/patch.yaml
+/users/paid-leave/{userId}/subtract-paid-leave:
+  patch:
+    $ref: paths/users/paid-leave/_userId/subtract-paid-leave/patch.yaml
 /timesheets/checkin/:
   post:
     $ref: paths/timesheets/checkin/post.yaml
@@ -66,3 +82,6 @@
 /projects/{projectId}/members/{memberId}/deactive:
   patch:
     $ref: paths/projects/_projectId/members/_memberId/deactive/patch.yaml
+/notifications/:
+  post:
+    $ref: paths/notifications/post.yaml
